@@ -3,3 +3,6 @@ google-auth-oauthlib==1.2.1
 google-auth-httplib2==0.2.0
 google-api-python-client==2.39.0
 peewee==3.16.2
+pytest==8.0.0
+pytest-mock==3.12.0
+unittest2==1.1.0
