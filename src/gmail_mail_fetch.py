@@ -1,14 +1,11 @@
 import base64
 import logging
 from datetime import datetime
-
+import re
 from googleapiclient.discovery import build
 
-from models.email import Email, db
 from utils import authenticate_gmail
-from database import db, setup_database
-
-SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
+from db_utils import db, setup_database, Email
 
 
 logging.basicConfig(level=logging.INFO,
@@ -38,17 +35,17 @@ def fetch_emails_and_store():
                 msg = service.users().messages().get(
                     userId="me", id=message["id"]).execute()
                 headers = msg["payload"].get("headers", [])
-                subject = snippet = sender = ""
+                subject = sender = ""
                 received_at = datetime.fromtimestamp(
                     int(msg["internalDate"]) / 1000)
 
                 for header in headers:
                     if header["name"] == "From":
-                        sender = header["value"]
+                        sender = re.search(r"<(.+?)>", header["value"])
+                        sender = sender.group(1) if sender else header["value"]
                     if header["name"] == "Subject":
                         subject = header["value"]
 
-                snippet = msg.get("snippet", "")
                 body = ""
                 if "parts" in msg["payload"]:
                     for part in msg["payload"]["parts"]:
@@ -61,7 +58,7 @@ def fetch_emails_and_store():
                                 logging.error(
                                     f"Error decoding email body for message {message['id']}: {e}")
 
-                Email.insert(id=message["id"], sender=sender, subject=subject, snippet=snippet,
+                Email.insert(id=message["id"], sender=sender, subject=subject,
                              body=body, received_at=received_at).on_conflict_ignore().execute()
             except Exception as e:
                 logging.error(f"Error processing message {message['id']}: {e}")
