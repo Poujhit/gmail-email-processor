@@ -125,12 +125,11 @@ pytest
 
 ## Troubleshooting
 
-- If `token.json` is missing, delete and re-authenticate by running the script again.
-- Ensure your Google Cloud project is configured correctly and the Gmail API is enabled.
-
-## License
-
-This project is licensed under the MIT License.
+- If you face any authorisation problems, delete the `token.json` and re-authenticate by running the script again.
+- Check if the `credentials.json` file is in the correct location.
+- Verify that the required Python libraries are installed.
+- Ensure the SQLite database file (`emails.db`) is not corrupted.
+- Check the logs for detailed error messages and stack traces.
 
 ## Author
 
