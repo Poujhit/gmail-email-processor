@@ -5,15 +5,16 @@ import re
 from googleapiclient.discovery import build
 
 from utils import authenticate_gmail
-from db_utils import db, setup_database, Email
+from db_utils import get_or_initialize_db, Email
 
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def fetch_emails_and_store():
+def fetch_emails_and_store(testing=False):
     try:
+        db = get_or_initialize_db(testing=testing)
         num_messages = int(
             input("Enter the number of latest messages to fetch: "))
 
@@ -26,7 +27,6 @@ def fetch_emails_and_store():
             userId="me", maxResults=num_messages).execute()
         messages = results.get("messages", [])
 
-        db.connect()
         logging.info("Storing messages...")
 
         for message in messages:
@@ -70,6 +70,5 @@ def fetch_emails_and_store():
 
 
 if __name__ == "__main__":
-    setup_database()
     fetch_emails_and_store()
     logging.info("Emails fetched from Gmail and stored locally.")

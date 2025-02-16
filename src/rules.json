@@ -10,8 +10,8 @@
         },
         {
           "field": "received_at",
-          "predicate": "less_than",
-          "value": "7",
+          "predicate": "greater_than",
+          "value": "27",
           "unit": "days"
         }
       ],
@@ -26,9 +26,9 @@
           "value": "zee5.com"
         },
         {
-          "field": "body",
+          "field": "subject",
           "predicate": "contains",
-          "value": "GitHub"
+          "value": "Gameplay"
         }
       ],
       "actions": ["move_to_test", "mark_as_unread"]

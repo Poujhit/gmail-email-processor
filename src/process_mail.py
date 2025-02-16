@@ -5,7 +5,7 @@ import logging
 from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from utils import authenticate_gmail
-from db_utils import db, Email
+from db_utils import Email, get_or_initialize_db
 from peewee import DateTimeField
 from functools import reduce
 import operator
@@ -19,18 +19,18 @@ logging.basicConfig(level=logging.INFO,
 #     with open("rules.json", "r") as file:
 #         return json.load(file)
 
-def process_emails_based_on_rules(rules_path):
+def process_emails_based_on_rules(rules_path, testing=False):
     logging.info(
         f"Starting to process emails based on rules from {rules_path}")
     try:
+        db = get_or_initialize_db(testing=testing)
+        logging.info("Database connection established")
         with open(rules_path, "r") as rules_file:
             rules = json.load(rules_file)
         logging.info("Rules loaded successfully")
 
         creds = authenticate_gmail()
         service = build("gmail", "v1", credentials=creds)
-        db.connect()
-        logging.info("Database connection established")
 
         for rule in rules.get("rules", []):
             logging.info(f"Applying rule: {rule}")
