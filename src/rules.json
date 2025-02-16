@@ -10,12 +10,12 @@
         },
         {
           "field": "received_at",
-          "predicate": "greater_than",
-          "value": "27",
+          "predicate": "lesser_than",
+          "value": "3",
           "unit": "days"
         }
       ],
-      "actions": ["mark_as_uread"]
+      "actions": ["mark_as_unread", "flag_message"]
     },
     {
       "predicate": "Any",

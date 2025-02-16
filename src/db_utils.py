@@ -19,6 +19,19 @@ class Email(BaseModel):
 
 
 def get_or_initialize_db(testing=False):
+    """
+    Initialize and return a database connection. If connection already exists, reuse it.
+
+    If `testing` is True, it uses a test database; otherwise, it defaults to 'emails.db'.
+    Reuses an existing database connection if available; otherwise, initializes a new one.
+
+    Args:
+        testing (bool): Whether to use a test database.
+
+    Returns:
+        SqliteDatabase: The initialized database connection.
+    """
+
     db_name = "test_database.db" if testing else "emails.db"
 
     if db_proxy.obj and isinstance(db_proxy.obj, SqliteDatabase):

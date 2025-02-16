@@ -131,6 +131,12 @@ pytest
 - Ensure the SQLite database file (`emails.db`) is not corrupted.
 - Check the logs for detailed error messages and stack traces.
 
+## Future improvements
+
+1. Automating the mail fetch and sync to database periodically so that all the latest messages will be polled and stored locally
+2. Adding cron to the process mail based on rules so that this job also runs periodically
+3. mail fetch and sync should handle large number of messages, currently it can't hold a large number of messages from gmail on memory since I am bulk writing to it.
+
 ## Author
 
 Poujhit

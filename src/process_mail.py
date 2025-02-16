@@ -20,6 +20,20 @@ logging.basicConfig(level=logging.INFO,
 #         return json.load(file)
 
 def process_emails_based_on_rules(rules_path, testing=False):
+    """
+    Processes emails based on user-defined rules specified in a JSON file.
+
+    Args:
+        rules_path (str): Path to the JSON file containing rules.
+        testing (bool): If True, uses a test database.
+
+    What this function does:
+    - Load rules from the JSON file.
+    - Authenticate with Gmail API.
+    - Query emails from the database that match rule conditions.
+    - Apply specified actions - supported actions: mark_as_read, mark_as_unread, move_to_{label_name}, flag_message(Starred).
+    - Handle errors gracefully and log all operations.
+    """
     logging.info(
         f"Starting to process emails based on rules from {rules_path}")
     try:
