@@ -7,18 +7,16 @@ from db_utils import get_or_initialize_db, Email
 class TestFetchEmails(unittest.TestCase):
     @patch("gmail_mail_fetch.authenticate_gmail")
     @patch("gmail_mail_fetch.build")
-    @patch("gmail_mail_fetch.input", return_value="2")  # Mock user input
-    @patch.object(Email, "insert")
-    def test_fetch_emails_and_store(self, mock_insert, mock_input, mock_build, mock_auth):
-        # Initialize test database
+    @patch("gmail_mail_fetch.input", return_value="2")
+    @patch.object(Email, "insert_many")
+    def test_fetch_emails_and_store(self, mock_insert_many, mock_input, mock_build, mock_auth):
+
         db = get_or_initialize_db(testing=True)
 
-        # Ensure the connection is open
         if db.is_closed():
             db.connect(reuse_if_open=True)
         db.create_tables([Email], safe=True)
 
-        # Mock authentication
         mock_creds = MagicMock()
         mock_auth.return_value = mock_creds
 
@@ -64,12 +62,14 @@ class TestFetchEmails(unittest.TestCase):
             }
         ]
 
-        # Call function
         fetch_emails_and_store(testing=True)
 
         # Assertions
-        # Expecting 2 email inserts
-        self.assertEqual(mock_insert.call_count, 2)
+        # Expecting insert_many to be called once with 2 email records
+        mock_insert_many.assert_called_once()
+        args, _ = mock_insert_many.call_args
+        # Ensure two emails are being inserted
+        self.assertEqual(len(args[0]), 2)
 
         # Cleanup test data
         Email.delete().execute()

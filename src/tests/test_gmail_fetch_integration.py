@@ -9,10 +9,8 @@ class TestFetchEmailsIntegration(unittest.TestCase):
     @patch("gmail_mail_fetch.build")
     @patch("gmail_mail_fetch.input", return_value="2")
     def test_fetch_emails_and_store_integration(self, mock_input, mock_build, mock_auth):
-        # Initialize test database
         db = get_or_initialize_db(testing=True)
 
-        # Ensure the connection is open
         if db.is_closed():
             db.connect(reuse_if_open=True)
         db.create_tables([Email], safe=True)
@@ -43,6 +41,7 @@ class TestFetchEmailsIntegration(unittest.TestCase):
                     ],
                     "parts": [{
                         "mimeType": "text/plain",
+                        # "This is a test message"
                         "body": {"data": "VGhpcyBpcyBhIHRlc3QgbWVzc2FnZQ=="}
                     }]
                 }
@@ -57,6 +56,7 @@ class TestFetchEmailsIntegration(unittest.TestCase):
                     ],
                     "parts": [{
                         "mimeType": "text/plain",
+                        # "Another test message"
                         "body": {"data": "QW5vdGhlciB0ZXN0IG1lc3NhZ2U="}
                     }]
                 }
@@ -71,8 +71,10 @@ class TestFetchEmailsIntegration(unittest.TestCase):
         self.assertEqual(len(stored_emails), 2)
         self.assertEqual(stored_emails[0].sender, "sender@example.com")
         self.assertEqual(stored_emails[0].subject, "Test Subject")
+        self.assertEqual(stored_emails[0].body, "This is a test message")
         self.assertEqual(stored_emails[1].sender, "another@example.com")
         self.assertEqual(stored_emails[1].subject, "Another Test")
+        self.assertEqual(stored_emails[1].body, "Another test message")
 
         # Cleanup test data (without dropping tables)
         Email.delete().execute()

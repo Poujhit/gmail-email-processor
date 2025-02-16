@@ -11,10 +11,8 @@ class TestProcessEmailsIntegration(unittest.TestCase):
     @patch("process_mail.authenticate_gmail")
     @patch("process_mail.build")
     def test_process_emails_based_on_rules_integration(self, mock_build, mock_authenticate):
-        # Initialize test database
         db = get_or_initialize_db(testing=True)
 
-        # Ensure connection is open
         if db.is_closed():
             db.connect(reuse_if_open=True)
         db.create_tables([Email], safe=True)
@@ -60,7 +58,6 @@ class TestProcessEmailsIntegration(unittest.TestCase):
             userId="me", id="123", body={"removeLabelIds": ["UNREAD"]}
         )
 
-        # Cleanup
         Email.delete().execute()
         db.close()
 
