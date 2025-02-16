@@ -3,6 +3,7 @@
 ## Overview
 
 This project fetches emails from a Gmail inbox using the Gmail API, stores them in an SQLite database, and processes them based on user-defined rules. It supports marking emails as read/unread, moving them to different labels, and flagging messages.
+Have uploaded a demo video on the demo folder.
 
 ## Features
 
