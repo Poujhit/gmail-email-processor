@@ -3,7 +3,7 @@
 ## Overview
 
 This project fetches emails from a Gmail inbox using the Gmail API, stores them in an SQLite database, and processes them based on user-defined rules. It supports marking emails as read/unread, moving them to different labels, and flagging messages.
-Have uploaded a demo video on the demo folder.
+Have uploaded a demo video on the [HERE]()
 
 ## Features
 
@@ -28,14 +28,14 @@ Have uploaded a demo video on the demo folder.
    git clone https://github.com/Poujhit/gmail-email-processor.git
    cd gmail-email-processor
    ```
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Create a virtual environment for python
+2. Create a virtual environment for python
    ```bash
    python -m venv venv
    source venv/bin/activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
    ```
 4. Set up Google API credentials:
    - Create a project in the [Google Cloud Console](https://console.cloud.google.com/)
