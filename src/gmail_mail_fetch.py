@@ -21,7 +21,7 @@ def fetch_emails_and_store(testing=False):
 
     What this function does:
     - Initialize the database.
-    - Prompt the user for the number of emails to fetch.
+    - Prompt the user for the number of emails to fetch. Limit to 100.
     - Authenticate with Gmail API.
     - Retrieve email metadata and full email content.
     - Extract relevant details (sender, subject, received timestamp, and body).
@@ -30,9 +30,14 @@ def fetch_emails_and_store(testing=False):
     - Close the database connection.
     """
     try:
-        db = get_or_initialize_db(testing=testing)
         num_messages = int(
             input("Enter the number of latest messages to fetch: "))
+
+        if num_messages > 100:  # Limiting the number of messages to fetch
+            logging.warning("Number of messages to fetch is limited to 100.")
+            num_messages = 100
+
+        db = get_or_initialize_db(testing=testing)
 
         logging.info(
             f"Fetching the latest {num_messages} messages from Gmail...")
@@ -46,7 +51,7 @@ def fetch_emails_and_store(testing=False):
 
         logging.info("Processing and storing messages...")
 
-        emails_to_insert = []  # Bulk insert list
+        emails_to_insert = []
 
         for message in messages:
             try:

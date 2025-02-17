@@ -11,7 +11,7 @@
         {
           "field": "received_at",
           "predicate": "lesser_than",
-          "value": "3",
+          "value": "5",
           "unit": "days"
         }
       ],
